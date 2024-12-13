@@ -1,12 +1,17 @@
 import socket
 import utils
+from os import environ
+
+LISTENING_PORT = environ.get("CALC_PORT")
+LISTENING_PORT = int(LISTENING_PORT) if LISTENING_PORT is not None else 13337
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(('0.0.0.0', 13337))  
+s.bind(('0.0.0.0', LISTENING_PORT))  
 
 s.listen(1)
 conn, addr = s.accept()
+print(f"{conn}:{addr} client connected", flush=True)
 
 while True:
 
@@ -44,12 +49,13 @@ while True:
         if int(data_bin[3],2) == 1:
             numb2 = '-' + str(numb2)
 
-        print(str(numb1) + operateur + str(numb2))
+        print(str(numb1) + operateur + str(numb2), flush=True)
         res  = eval(str(numb1) + operateur + str(numb2))
+        print(res, flush=True)
         conn.send(str(res).encode())
 
     except socket.error:
-        print("Error Occured.")
+        print("Error Occured.", flush=True)
         break
 
 conn.close()

@@ -1,0 +1,7 @@
+services:
+  calc:
+    build: .
+    environment:
+      - CALC_PORT:13337
+    ports:
+      - ${CALC_PORT:-13337}:13337

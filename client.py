@@ -2,7 +2,7 @@ import socket
 import re
 import utils
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('10.1.1.15', 13337))
+s.connect(('localhost', 10000))
 s.send('Hello'.encode())
 
 # On reçoit la string Hello
@@ -53,10 +53,6 @@ else:
     if msg[len(str(numbers[0])) + 1] == '-':
         negative_numb2 = 1
 
-print(msg[len(msg) - len(str(numbers[1]))])
-
-
-print(operateur)
 
 if operateur == '+':
     operateur_bytes = 1
@@ -79,8 +75,6 @@ firstoctet_bytes = firstoctet.to_bytes(1, byteorder="big")
 payload = firstoctet_bytes + numbs_bytes
 
 
-print(utils.bytes_to_bits_binary(numbs_bytes))
-print(utils.bytes_to_bits_binary(payload))
 # On envoie
 s.send(payload)
 
